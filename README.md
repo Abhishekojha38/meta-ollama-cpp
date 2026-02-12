@@ -18,11 +18,6 @@ This layer depends on:
   * branch: main, scarthgap, or compatible
   * layers: meta-oe, meta-python
 
-## Patches
-
-Please submit any patches against the meta-ollama-cpp layer to the maintainer:
-
-* Maintainer: Your Name <your.email@example.com>
 
 ## Table of Contents
 

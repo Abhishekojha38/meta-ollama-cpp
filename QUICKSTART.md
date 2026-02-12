@@ -43,25 +43,7 @@ cqfd run
 
 ### 4. Deploy & Test
 
-```bash
-# Run in QEMU
-runqemu playground-ai-image nographic slirp
-
-
-# On the device:
-# 1. Download a model
-wget -P /var/lib/ollama/models \
-  https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
-
-# 2. Start the server
-systemctl start ollama-cpp-server
-
-# 3. Test
-curl http://localhost:11434/api/generate -d '{
-  "model": "tinyllama",
-  "prompt": "Hello!"
-}'
-```
+Refer to [llama-server-api-guide.md](llama-server-api-guide.md) for detailed instructions on how to deploy and test the server.
 
 ## Common Commands
 

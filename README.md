@@ -95,6 +95,34 @@ curl -X POST http://localhost:11434/api/generate -d '{
 }'
 ```
 
+## Quick Test
+
+```bash
+# Download the tinyllama model
+root@playground-arm64:~# wget -P /var/lib/ollama/models \
+>   https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+--2026-02-12 04:01:42--  https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+Resolving huggingface.co... 18.239.6.111, 18.239.6.122, 18.239.6.29, ...
+Connecting to huggingface.co|18.239.6.111|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Connecting to cas-bridge.xethub.hf.co|13.225.196.2|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 668788096 (638M)
+Saving to: '/var/lib/ollama/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf'
+
+tinyllama-1.1b-chat-v1.0.Q4_K_M.ggu 100%[==================================================================>] 637.81M  23.4MB/s    in 28s     
+
+2026-02-12 04:02:10 (23.1 MB/s) - '/var/lib/ollama/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf' saved [668788096/668788096]
+```
+
+* Run the model
+
+```bash
+llama-cli -m /var/lib/ollama/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+```
+
+![](llama-cpp.png)
+
 ## VI. License
 
 See individual recipes for license information. Most components are MIT licensed.

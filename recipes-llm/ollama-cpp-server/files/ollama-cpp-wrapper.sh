@@ -35,10 +35,8 @@ fi
 exec /usr/bin/llama-server \
     --host "$BIND_IP" \
     --port "$BIND_PORT" \
-    --models-path "$MODELS_DIR" \
     ${DEFAULT_MODEL:+--model "$DEFAULT_MODEL"} \
     --ctx-size 2048 \
     --n-gpu-layers 0 \
     --threads 4 \
-    --log-format text \
     --verbose

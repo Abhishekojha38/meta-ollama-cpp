@@ -2,16 +2,16 @@ SUMMARY = "Port of Facebook's LLaMA model in C/C++"
 DESCRIPTION = "llama.cpp is a plain C/C++ implementation of Meta's LLaMA model with minimal dependencies for efficient local LLM inference"
 HOMEPAGE = "https://github.com/ggerganov/llama.cpp"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=b5330f450b52b1d8b7f4c82b1f1e5e74"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=223b26b3c1143120c87e2b13111d3e99"
 
-SRCREV = "ec91f21dd3db7e075eade22f28ca0b63bc01ad2c"
-SRC_URI = "git://github.com/ggerganov/llama.cpp.git;protocol=https;branch=master"
-
-S = "${WORKDIR}/git"
+SRCREV = "914dde72babffc8aa2e04c97dafcec029a671b2e"
+SRC_URI = "git://github.com/ggml-org/llama.cpp.git;protocol=https;branch=master"
 
 DEPENDS = "curl"
 
 inherit cmake pkgconfig
+
+S = "${UNPACKDIR}/git"
 
 # Architecture-specific optimizations
 EXTRA_OECMAKE = ""
@@ -37,28 +37,32 @@ EXTRA_OECMAKE += " -DLLAMA_CLBLAST=OFF"
 do_install:append() {
     # Install binaries
     install -d ${D}${bindir}
-    install -m 0755 ${B}/bin/main ${D}${bindir}/llama-cli
-    install -m 0755 ${B}/bin/server ${D}${bindir}/llama-server
-    install -m 0755 ${B}/bin/quantize ${D}${bindir}/llama-quantize
-    install -m 0755 ${B}/bin/perplexity ${D}${bindir}/llama-perplexity
-    
+    install -m 0755 ${B}/bin/llama-cli ${D}${bindir}/llama-cli
+    install -m 0755 ${B}/bin/llama-server ${D}${bindir}/llama-server
+    install -m 0755 ${B}/bin/llama-quantize ${D}${bindir}/llama-quantize
+    install -m 0755 ${B}/bin/llama-perplexity ${D}${bindir}/llama-perplexity
+
     # Install shared libraries
     install -d ${D}${libdir}
-    install -m 0755 ${B}/libllama.so ${D}${libdir}/libllama.so
-    
+    install -m 0755 ${B}/bin/libllama.so* ${D}${libdir}/
+    install -m 0755 ${B}/bin/libggml-cpu.so* ${D}${libdir}/
+    install -m 0755 ${B}/bin/libggml.so* ${D}${libdir}/
+    install -m 0755 ${B}/bin/libggml-base.so* ${D}${libdir}/
+    install -m 0755 ${B}/bin/libmtmd.so* ${D}${libdir}/
+
     # Install headers for development
     install -d ${D}${includedir}/llama
-    install -m 0644 ${S}/llama.h ${D}${includedir}/llama/
-    install -m 0644 ${S}/ggml.h ${D}${includedir}/llama/
+    install -m 0644 ${S}/include/llama.h ${D}${includedir}/llama/
+    install -m 0644 ${S}/ggml/include/ggml.h ${D}${includedir}/llama/
 }
 
 PACKAGES = "${PN} ${PN}-dev ${PN}-dbg"
 
-FILES:${PN} = "${bindir}/* ${libdir}/*.so"
+FILES:${PN} = "${bindir}/* ${libdir}/*.so*"
 FILES:${PN}-dev = "${includedir}/*"
 FILES:${PN}-dbg = "${bindir}/.debug ${libdir}/.debug"
 
 # Allow already-stripped binaries (llama.cpp pre-strips some)
-INSANE_SKIP:${PN} += "already-stripped ldflags"
+INSANE_SKIP:${PN} += "already-stripped ldflags installed-vs-shipped"
 
 RDEPENDS:${PN} = "libcurl"
